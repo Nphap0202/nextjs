@@ -1,0 +1,18 @@
+.red {
+    color: red;
+    border: solid 1px red;
+}
+
+.footer {
+    background-color: gray;
+    color: azure;
+    text-align: center;
+    padding: 5px 0;
+}
+
+.link {
+    margin: 20px 0;
+    list-style-type: none;
+    color: red;
+    border: solid 1px red;
+}
