@@ -1,36 +1,54 @@
 import Table from 'react-bootstrap/Table';
+import {IBlog} from "@/types/backend";
+import Button from "react-bootstrap/Button";
+import CreateModal from "@/components/create.modal";
+import {useState} from "react";
 
-function AppTable() {
+interface IProps {
+    blogs: IBlog[]
+}
+
+function AppTable(props: IProps) {
+    const [showModal, setShowModal]=useState<boolean>(false);
+
+    const {blogs} = props;
+    console.log(blogs);
     return (
-        <Table striped>
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Username</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td colSpan={2}>Larry the Bird</td>
-                <td>@twitter</td>
-            </tr>
-            </tbody>
-        </Table>
+        <>
+            <div className="mb-3" style={{display: 'flex', justifyContent: 'space-between'}}>
+                <h3>Table Blogs</h3>
+                <Button variant="secondary" onClick={()=>setShowModal(true)}>Add</Button>
+            </div>
+            <Table striped bordered hover size="sm">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Description</th>
+                    <th>Is It Done</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {blogs?.map((blog: IBlog) => {
+                    return (
+                        <tr key={blog.id}>
+                            <td>{blog.id}</td>
+                            <td>{blog.description}</td>
+                            <td>{blog.isItDone}</td>
+                            <td>
+                                <Button>View</Button>
+                                <Button variant="warning" className="mx-3">Edit</Button>
+                                <Button variant="danger">Delete</Button>
+                            </td>
+                        </tr>
+                    )
+                })}
+
+
+                </tbody>
+            </Table>
+            <CreateModal showModal={showModal} setShowModal={setShowModal}/>
+        </>
     );
 }
 

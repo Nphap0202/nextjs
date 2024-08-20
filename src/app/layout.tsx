@@ -23,9 +23,7 @@ export default function RootLayout({
         <AppHeader/>
         <Container>
             {children}
-            <AppTable/>
         </Container>
-
         <AppFooter/>
         </body>
         </html>

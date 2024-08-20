@@ -1,7 +1,7 @@
 'use client'
 import Image from "next/image";
 import styles from "./page.module.css";
-
+import useSWR from "swr";
 import style from "@/styles/app.module.css"
 import Link from "next/link";
 import Container from "react-bootstrap/Container";
@@ -11,16 +11,28 @@ import Axios from "axios";
 
 export default function Home() {
 
-    const [todo, setTodo] = useState("");
-    const fetchTodoData = () => {
-        Axios.get("http://localhost:9000/todo").then((response) => {
-            console.log("Data", response.data);
-        });
-    };
+    const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-    useEffect(() => {
-        fetchTodoData();
-    }, []);
+    const {data, error, isLoading} = useSWR("http://localhost:9000/todo", fetcher, {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false
+    });
+if(!data){
+    return (
+        <div>Loading....</div>
+    )
+}    // const [todo, setTodo] = useState("");
+    // const fetchTodoData = () => {
+    //     Axios.get("http://localhost:9000/todo").then((response) => {
+    //        // setTodo(response.data);
+    //         console.log("Data", response.data);
+    //     });
+    // };
+    //
+    // useEffect(() => {
+    //      fetchTodoData();
+    // }, []);
     // useEffect(() => {
     //     const fetchData = async () => {
     //         const res = await fetch("http://localhost:9000/todo");
@@ -42,6 +54,7 @@ export default function Home() {
                     <Link href="/instagram">Instagram</Link>
                 </li>
             </ul>
+            <AppTable blogs={data}/>
         </div>
     );
 }
