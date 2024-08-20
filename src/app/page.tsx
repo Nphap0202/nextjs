@@ -6,9 +6,17 @@ import style from "@/styles/app.module.css"
 import Link from "next/link";
 import Container from "react-bootstrap/Container";
 import AppTable from "@/components/app.table";
+import {useEffect} from "react";
 
 export default function Home() {
-
+    useEffect(() => {
+        const fetchData = async () => {
+            const res = await fetch("http://localhost:9000/todo");
+            const json = await res.json();
+            console.log("dada", json);
+        }
+        fetchData();
+    }, []);
     return (
         <div>
             <ul>
