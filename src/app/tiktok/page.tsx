@@ -1,8 +1,8 @@
-const Instagram=()=>{
+const TikTok=()=>{
     return(
         <div>
-            Instagram page
+            Tiktok page
         </div>
     );
 }
-export default Instagram;
+export default TikTok;

@@ -6,17 +6,29 @@ import style from "@/styles/app.module.css"
 import Link from "next/link";
 import Container from "react-bootstrap/Container";
 import AppTable from "@/components/app.table";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import Axios from "axios";
 
 export default function Home() {
+
+    const [todo, setTodo] = useState("");
+    const fetchTodoData = () => {
+        Axios.get("http://localhost:9000/todo").then((response) => {
+            console.log("Data", response.data);
+        });
+    };
+
     useEffect(() => {
-        const fetchData = async () => {
-            const res = await fetch("http://localhost:9000/todo");
-            const json = await res.json();
-            console.log("dada", json);
-        }
-        fetchData();
+        fetchTodoData();
     }, []);
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         const res = await fetch("http://localhost:9000/todo");
+    //         const json = await res.json();
+    //         console.log("dada", json);
+    //     }
+    //     fetchData();
+    // }, []);
     return (
         <div>
             <ul>
