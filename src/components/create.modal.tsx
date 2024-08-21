@@ -3,6 +3,7 @@ import {useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import {toast} from 'react-toastify';
 
 interface IProps {
     showModal: boolean;
@@ -13,13 +14,33 @@ function CreateModal(props: IProps) {
 
     const {showModal, setShowModal} = props;
 
-    const [desription, setDesription] = useState('');
+    const [description, setDescriptin] = useState('');
 
-    const handleSubmit =()=>{
-        console.log(desription);
+    const handleSubmit = () => {
+        if(!description) {
+            toast.error('Description must not empty!')
+            return;
+        }
+        fetch("http://localhost:9000/todo", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json text/plain, */*'
+            },
+            body: JSON.stringify({description})
+        }).then(res => res.json()).then(res => {
+                if (res) {
+                    toast.success("Them moi thanh cong");
+                    handleCloseModal();
+                }
+            }
+        );
+
+        // toast.success('Add new  task successfully!');
+        // console.log(desription);
     }
-    const handleCloseModal=()=>{
-        setDesription("");
+    const handleCloseModal = () => {
+        setDescriptin("");
         setShowModal(false);
     }
     return (
@@ -39,8 +60,8 @@ function CreateModal(props: IProps) {
                         <Form.Group className="mb-3">
                             <Form.Label>Description</Form.Label>
                             <Form.Control type="text" placeholder="description..."
-                                          value={desription}
-                                          onChange={e => setDesription(e.target.value)}
+                                          value={description}
+                                          onChange={e => setDescriptin(e.target.value)}
                             />
                         </Form.Group>
                         <Form.Check type="checkbox" label="Is It Done">
@@ -51,7 +72,7 @@ function CreateModal(props: IProps) {
                     <Button variant="secondary" onClick={() => handleCloseModal()}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={()=>handleSubmit()}>Save</Button>
+                    <Button variant="primary" onClick={() => handleSubmit()}>Save</Button>
                 </Modal.Footer>
             </Modal>
         </>
